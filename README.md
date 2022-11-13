@@ -149,3 +149,17 @@ DAG Assign
         t2 >> t4
      '''
 
+For SQL Requirements, I use Google Big Query as my tool for query
+
+    SELECT DISTINCT category, AVG(discount_no_null) as avg_discount
+    FROM 'r2de-workshop-359809.LMWN.cooking' c
+    LEFT JOIN 'r2de-workshop-359809.LMWN.discount' d
+    On c.id = d.restaurant_id
+    GROUP BY category;
+    
+And
+
+    SELECT DISTINCT cooking_bin, count(cooking_bin) 
+    FROM 'r2de-workshop-359809.LMWN.cooking' 
+    GROUP BY cooking_bin
+

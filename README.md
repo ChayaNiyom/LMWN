@@ -2,6 +2,7 @@
 
 setting
 
+    '''python
     from airflow.models import DAG
     from airflow.operators.python import PythonOperator
     from airflow.providers.mysql.hooks.mysql import MySqlHook
@@ -99,4 +100,5 @@ DAG Assign
             )
         t1 >> t3
         t2 >> t4
+     '''
 

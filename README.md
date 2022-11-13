@@ -1,5 +1,46 @@
 # Data Engineer Test (Hand-On)
 
+I was trying to use Postgres but I got stuck on connecting to Hive. This is what I've done with Postgres DB
+
+    test=# CREATE TABLE order_detail (
+    test(#  order_created_timestamp TIMESTAMP,
+    test(#  status VARCHAR(12),
+    test(#  price INT,
+    test(#  discount FLOAT,
+    test(#  id VARCHAR(40),
+    test(#  driver_id VARCHAR(40),
+    test(#  user_id VARCHAR(40),
+    test(#  restaurant_id VARCHAR(40) );
+    CREATE TABLE
+    test=# CREATE TABLE restaurant_detail (
+    test(#  id VARCHAR(40),
+    test(#  restaurant_name VARCHAR(15),
+    test(#  category VARCHAR(10),
+    test(#  estimated_cooking_time FLOAT,
+    test(#  latitude FLOAT,
+    test(#  longitude FLOAT );
+    CREATE TABLE
+    test=# \d
+                 List of relations
+     Schema |       Name        | Type  | Owner
+    --------+-------------------+-------+-------
+    public | order_detail      | table | GAP
+    public | restaurant_detail | table | GAP
+    (2 rows)
+
+    test=# COPY order_detail FROM '/Users/GAP/Desktop/LMWN/order_detail.csv' DELIMITER ',' CSV HEADER;
+    COPY 395361
+    test=# COPY restaurant_detail FROM '/Users/GAP/Desktop/LMWN/restaurant_detail.csv' DELIMITER ',' CSV HEADER;
+    ERROR:  value too long for type character varying(10)
+    CONTEXT:  COPY restaurant_detail, line 3386, column category: "JAPANESE FOOD"
+    test=# ALTER TABLE restaurant_detail
+    test-#  ALTER COLUMN category TYPE VARCHAR(20);
+    ALTER TABLE
+    test=# COPY restaurant_detail FROM '/Users/GAP/Desktop/LMWN/restaurant_detail.csv' DELIMITER ',' CSV HEADER;
+    COPY 12623
+
+Since I couldn’t connect DB to Hive, so I do data cleansing on Google Colab and adjust the code for Airflow DAG
+
 setting
 
     #Import Airflow Packages

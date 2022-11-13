@@ -2,22 +2,26 @@
 
 setting
 
-    '''python
+    #Import Airflow Packages
     from airflow.models import DAG
     from airflow.operators.python import PythonOperator
     from airflow.providers.mysql.hooks.mysql import MySqlHook
     from airflow.utils.dates import days_ago
+    
+    #Import PySpark Packages
     from pyspark.sql import SparkSession
     from pyspark.sql.functions import lit
     from pyspark.sql import functions as f
     from pyspark.sql.functions import expr
     from pyspark.sql.functions import when
+    
+    #Import Pandas
     import pandas as pd
 
-
+    #Create Spark Session for Spark
     spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-
+    #Cloud Directory 
     order_detail_input_path = "/home/airflow/gcs/data/order_detail.csv"
     restaurant_detail_input_path = "/home/airflow/gcs/data/restaurant_detail.csv"
     cooking_output_path = "/home/airflow/gcs/data/cooking.csv"
@@ -25,11 +29,13 @@ setting
 
 function for DAG
 
+    #Load order_detail.CSV file and create PySpark Dataframe
     def get_data_discount(spark_order):
 
         order_detail = pd.read_csv(order_detail_input_path)
         spark_order = spark.createDataFrame(order_detail) 
-
+    
+    #Create dt from Timestamp and new discount column
     def clean_data_discount(discount_detail_path):
 
         order_detail_m1 = spark_order.withColumn("order_created_timestamp",
@@ -41,13 +47,13 @@ function for DAG
                          )
         order_detail_clean.coalesce(1).write.csv(discount_detail_path, header = True)
                                 
-
+    #Load restaurant_detail.CSV file and create PySpark Dataframe
     def get_data_cooking(spark_restaurant):
 
         restaurant_detail = pd.read_csv(restaurant_detail_input_path)
         spark_restaurant = spark.createDataFrame(restaurant_detail) 
 
-
+    #Create dt column and cooking bin with condition
     def clean_data_cooking(cooking_detail_path):
 
         restaurant_detail_m1 = spark_restaurant.withColumn("dt", lit("latest"))

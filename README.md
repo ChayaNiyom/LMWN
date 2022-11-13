@@ -1,6 +1,5 @@
 # Data Engineer Test (Hand-On)
 
-'''python
 
     from airflow.models import DAG
     from airflow.operators.python import PythonOperator
@@ -95,4 +94,4 @@
             )
         t1 >> t3
         t2 >> t4
-'''
+

@@ -1,5 +1,6 @@
 # Data Engineer Test (Hand-On)
 
+setting
 
     from airflow.models import DAG
     from airflow.operators.python import PythonOperator
@@ -20,6 +21,8 @@
     restaurant_detail_input_path = "/home/airflow/gcs/data/restaurant_detail.csv"
     cooking_output_path = "/home/airflow/gcs/data/cooking.csv"
     discount_output_path = "/home/airflow/gcs/data/discount.csv"
+
+function for DAG
 
     def get_data_discount(spark_order):
 
@@ -57,6 +60,8 @@
         )
 
         restaurant_detail_new.coalesce(1).write.csv(cooking_detail_path, header = True)
+
+DAG Assign
 
     with DAG(
         "lmwn_dag",
